@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tower of Trials: Combat Mode</title>
-    <link href="/dist/output.css" rel="stylesheet" />
+    <!-- Tailwind CDN for development. Switch to /dist/output.css for production build. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <link href="/dist/output.css" rel="stylesheet"> -->
   </head>
   <body
     class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
@@ -15,7 +17,28 @@
       <button class="px-6 py-2 bg-blue-600 rounded hover:bg-blue-700">
         Start Game
       </button>
+      <button
+        id="fetch-health"
+        class="px-6 py-2 bg-blue-600 rounded hover:bg-blue-700"
+      >
+        Fetch API Health
+      </button>
+      <pre
+        id="api-response"
+        class="mt-6 bg-gray-800 text-green-400 p-4 rounded text-left hidden"
+      ></pre>
     </div>
     <script src="/main.js"></script>
+    <script>
+      document
+        .getElementById('fetch-health')
+        .addEventListener('click', async () => {
+          const res = await fetch('/api/health');
+          const data = await res.json();
+          const pre = document.getElementById('api-response');
+          pre.textContent = JSON.stringify(data, null, 2);
+          pre.classList.remove('hidden');
+        });
+    </script>
   </body>
 </html>

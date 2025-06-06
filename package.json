@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "tailwindcss -c tailwind.config.js -i ./public/input.css -o ./public/dist/output.css --minify",
+    "build:css": "npx tailwindcss -c tailwind.config.js -i ./public/input.css -o ./public/dist/output.css --minify",
     "dev": "nodemon server/app.js",
     "setup": "npm install && npm run build:css && npm start"
   },
@@ -26,5 +25,6 @@
     "postcss": "^8.5.4",
     "prettier": "^3.5.3",
     "tailwindcss": "^4.1.8"
-  }
+  },
+  "type": "module"
 }

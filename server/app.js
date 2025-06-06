@@ -27,7 +27,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Define a simple API route for health checks
 // When a GET request is made to '/api/health', respond with a JSON object indicating status
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    message: 'Server is healthy',
+    time: new Date().toLocaleString()
+  });
 });
 
 // Start the server and have it listen on the specified port
