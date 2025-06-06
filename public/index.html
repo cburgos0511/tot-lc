@@ -5,29 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tower of Trials: Combat Mode</title>
     <!-- Tailwind CDN for development. Switch to /dist/output.css for production build. -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link href="/dist/output.css" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              gothic: ['"MedievalSharp"', 'cursive'],
+            },
+            keyframes: {
+              possessed: {
+                '0%':   { transform: 'translate(0, 0) rotate(0deg) scale(1)' },
+                '10%':  { transform: 'translate(-3px, 3px) rotate(3deg) scale(1.5)' },
+                '20%':  { transform: 'translate(4px, -2px) rotate(-2deg) scale(1.5)' },
+                '22%':  { transform: 'translate(-2px, 3px) rotate(4deg) scale(1.5)' },
+                '25%':  { transform: 'translate(2px, -3px) rotate(-2deg) scale(1.1)' },
+                '30%':  { transform: 'translate(-1px, 2px) rotate(3deg) scale(1.00)' },
+                '32%':  { transform: 'translate(3px, -1px) rotate(-2deg) scale(1.00)' },
+                '34%':  { transform: 'translate(-1px, 4px) rotate(2deg) scale(1.00)' },
+                '38%':  { transform: 'translate(2px, -4px) rotate(-3deg) scale(1.00)' },
+                '42%':  { transform: 'translate(-3px, 1px) rotate(2deg) scale(0.99)' },
+                '45%': { transform: 'translate(0, 0) rotate(0deg) scale(1)' },
+              },
+            },
+            animation: {
+              possessed: 'possessed 0.7s infinite ease-in-out',
+            },
+          }
+        }
+      }
+    </script>
   </head>
   <body
     class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
   >
-    <div class="text-center">
-      <h1 class="text-4xl font-bold mb-4">Tower of Trials: Combat Mode</h1>
-      <p class="mb-8">Ascend the tower and defeat your foes!</p>
-      <button class="px-6 py-2 bg-blue-600 rounded hover:bg-blue-700">
-        Start Game
-      </button>
-      <button
-        id="fetch-health"
-        class="px-6 py-2 bg-blue-600 rounded hover:bg-blue-700"
-      >
-        Fetch API Health
-      </button>
-      <pre
-        id="api-response"
-        class="mt-6 bg-gray-800 text-green-400 p-4 rounded text-left hidden"
-      ></pre>
+  <div class="text-center">
+    <h1 class="text-6xl md:text-7xl font-gothic tracking-wider
+        animate-possessed
+        bg-gradient-to-r from-green-800 via-lime-500 to-yellow-900
+        text-transparent bg-clip-text
+        drop-shadow-[0_0_20px_rgba(0,0,0,1)]
+        select-none cursor-default
+        -mt-32">
+      ⚔️ Tower of Trials: Combat Mode ⚔️
+    </h1>
+    <p class="mb-8">Ascend the tower and defeat your foes!</p>
+  
+    <button class="bg-gradient-to-b from-yellow-700 to-yellow-900
+        text-yellow-100 font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-yellow-800 shadow-lg
+        hover:bg-gradient-to-b from-yellow-600 to-yellow-800 hover:scale-105 active:scale-95
+        transition-transform transition-colors duration-200 ease-in-out
+        select-none cursor-pointer tracking-wider font-serif mb-4">
+      Start Game
+    </button>
+  
+    <button id="settings" class="bg-gradient-to-b from-yellow-700 to-yellow-900
+        text-yellow-100 font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-yellow-800 shadow-lg
+        hover:bg-gradient-to-b from-yellow-600 to-yellow-800 hover:scale-105 active:scale-95
+        transition-transform transition-colors duration-200 ease-in-out
+        select-none cursor-pointer tracking-wider font-serif mb-6">
+      ⚙️ Setting
+    </button>
+  
+    
+    <div class="flex items-center justify-center">
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" class="sr-only peer" />
+        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-600
+            peer-focus:ring-4 peer-focus:ring-green-300 dark:bg-gray-700 dark:peer-checked:bg-green-500
+            transition-colors duration-300"></div>
+        <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow-md
+            peer-checked:translate-x-full peer-checked:border-green-600 transition-transform duration-300"></div>
+      </label>
+      <span class="ml-3 text-yellow-100 font-semibold select-none">Dark Mode</span>
     </div>
+  </div>
+  </body>
     <script src="/main.js"></script>
     <script>
       document
