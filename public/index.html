@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,7 +10,6 @@
       href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap"
       rel="stylesheet"
     />
-
     <script>
       tailwind.config = {
         theme: {
@@ -85,6 +83,8 @@
   <body
     class="bg-gray-900 dark:bg-gray-800 text-white flex items-center justify-center min-h-screen transition-colors duration-500"
   >
+
+  <div id ="main-screen">
     <div
       class="fixed inset-0 -z-10 bg-[url('https://files.idyllic.app/files/static/3273716')] bg-cover bg-center animate-brightnessPulse pointer-events-none"
     ></div>
@@ -105,13 +105,14 @@
       </p>
       <div class="flex items-center justify-center gap-8 mb-12">
         <button
+          id="start-btn"
           class="bg-gradient-to-b from-yellow-700 to-yellow-900 text-yellow-100 font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-yellow-800 animate-glowPulse hover:bg-gradient-to-b from-yellow-600 to-yellow-800 hover:scale-105 active:scale-95 transition-transform transition-colors duration-200 ease-in-out select-none cursor-pointer tracking-wider font-serif mb-4"
         >
           Start Game
         </button>
-
+      
         <button
-          id="settings"
+          id="settings-button-main"
           class="bg-gradient-to-b from-yellow-700 to-yellow-900 text-yellow-100 font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-yellow-800 animate-glowPulse hover:bg-gradient-to-b from-yellow-600 to-yellow-800 hover:scale-105 active:scale-95 transition-transform transition-colors duration-200 ease-in-out select-none cursor-pointer tracking-wider font-serif mb-4"
         >
           ⚙️ Setting
@@ -132,9 +133,307 @@
         >
       </div>
     </div>
+    </div>
 
-    <!-- Modular JS imports -->
+    <div id="countdownOverlay" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden">
+      <span id="countdownText" class="flex gap-2 text-9xl font-extrabold font-gothic text-transparent bg-gradient-to-r from-pink-700 via-red-700 to-yellow-600 bg-clip-text">
+        3
+      </span>
+    </div>
+    <div id="start-screen" class="fixed inset-0 z-50" style="display: none;">
+       
+
+      <div class="fixed top-4 right-4 z-50">
+        <button id="settings-button-start" class="text-2xl p-2 bg-white rounded-full shadow hover:bg-gray-200">
+          ⚙️
+        </button>
+      </div>
+  
+
+      <div
+        class="w-full h-full bg-cover bg-center bg-no-repeat relative"
+        style="
+          background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/source/0855d773750875.5c13911348716.jpg');
+        "
+      >
+       
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    
+       
+        <div class="relative z-10 p-6 max-w-4xl mx-auto pt-10">
+          <h1 class="text-white text-3xl font-bold mb-6 text-center">Levels</h1>
+          <div class="grid grid-cols-5 gap-6 justify-center max-w-xl mx-auto">
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 1</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 2</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 3</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 4</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 5</button>
+
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 6</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 7</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 8</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 9</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 10</button>
+
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 11</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 12</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 13</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 14</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 15</button>
+
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 16</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 17</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 18</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 19</button>
+      <button
+        class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-yellow-300 rounded-lg
+        px-4 py-4 w-16 h-16 text-xl font-semibold shadow-[0_0_15px_rgba(200,150,50,0.8)] 
+        border-4 border-yellow-800
+        hover:from-purple-800 hover:via-indigo-800 hover:to-black 
+        hover:text-yellow-400
+        hover:shadow-[0_0_30px_rgba(250,200,50,1)] 
+        transition-all duration-300 ease-in-out
+        focus:outline-none focus:ring-4 focus:ring-yellow-500
+        font-gothic tracking-wider select-none"
+      > 20</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="setting-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center">
+  <div class="relative bg-white rounded-lg shadow-xl flex flex-col items-center justify-center"
+       style="width: 75vw; height: 75vh; max-width: 75vh; max-height: 75vw;">
+    <button id="close-settings" class="absolute top-4 right-4 text-3xl leading-none text-gray-600 hover:text-black">
+      x
+    </button>
+    <h2 class="text-2xl font-bold mb-4 text-black">Settings</h2>
+    <p class="text-gray-600">Your settings content goes here.</p>
+  </div>
+</div>
+
+<script>
+
+  const settingOverlay = document.getElementById("setting-overlay");
+  const settingsButtonMain = document.getElementById("settings-button-main"); 
+  const settingsButton = document.getElementById("settings-button-start"); 
+  const closeButton = document.getElementById("close-settings");
+  
+  function openSettings() {
+    settingOverlay.classList.remove("hidden");
+    settingOverlay.classList.add("flex");
+  }
+  
+  function closeSettings() {
+    settingOverlay.classList.remove("flex");
+    settingOverlay.classList.add("hidden");
+  }
+  
+  if (settingOverlay && closeButton) {
+    if (settingsButtonMain) {
+      settingsButtonMain.addEventListener("click", openSettings);
+    }
+    if (settingsButton) {
+      settingsButton.addEventListener("click", openSettings);
+    }
+    closeButton.addEventListener("click", closeSettings);
+  }
+  
+  </script>
+
     <script type="module" src="/js/health.js"></script>
     <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/start.js"></script>
+    <script type="module" src="/js/setting.js"></script>
   </body>
 </html>
