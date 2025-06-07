@@ -8,6 +8,13 @@ import path from 'path';
 // Import fileURLToPath from 'url' to convert import.meta.url to a file path
 import { fileURLToPath } from 'url';
 
+// Import modular routers
+import charactersRouter from './routes/characters.js';
+import weaponsRouter from './routes/weapons.js';
+import serversRouter from './routes/servers.js';
+import layoutsRouter from './routes/layouts.js';
+import adminPanelRouter from './routes/adminPanel.js';
+
 // Create an instance of an Express application
 const app = express();
 
@@ -33,6 +40,13 @@ app.get('/api/health', (req, res) => {
     time: new Date().toLocaleString()
   });
 });
+
+// Mount API routers
+app.use('/api/characters', charactersRouter);
+app.use('/api/weapons', weaponsRouter);
+app.use('/api/servers', serversRouter);
+app.use('/api/layouts', layoutsRouter);
+app.use('/admin-panel', adminPanelRouter);
 
 // Start the server and have it listen on the specified port
 // When the server starts, log a message to the console with the URL

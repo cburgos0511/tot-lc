@@ -117,5 +117,20 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+## Server Folder Structure
+
+The `server/` directory is organized to follow best practices for scalable and maintainable Node.js applications. Here's a breakdown of each main folder:
+
+- **controllers/**: Handle incoming requests, process input, and return responses. Controllers act as the bridge between routes and business logic (services).
+- **models/**: Define the data structures and schemas for the application. In a real app, these would map to database collections/tables.
+- **routes/**: Define the API endpoints and route incoming HTTP requests to the appropriate controller functions.
+- **services/**: Contain the core business logic of the application. Services are called by controllers to perform operations, calculations, or data manipulation.
+- **utils/**: Utility functions and helpers used throughout the server codebase. This can include database connection logic, formatting helpers, etc.
+- **config/**: Configuration files for environment variables, database settings, and other app-wide config.
+
+This structure makes it easy to scale, refactor, and onboard new developers.
+
+---
+
 Enjoy climbing the Tower of Trials!  
 Feel free to contribute or open issues on GitHub.
