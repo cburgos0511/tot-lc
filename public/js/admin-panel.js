@@ -1,6 +1,7 @@
 import { TabBar } from './components/TabBar.js';
 import { SortBar } from './components/SortBar.js';
 import { WeaponsList } from './components/WeaponsList.js';
+import { WeaponSimulator } from './components/WeaponSimulator.js';
 
 const tabs = ['weapons', 'lighthouse', 'characters'];
 let currentTab = 'weapons';
@@ -17,9 +18,11 @@ const sortFields = [
 let weaponsData = [];
 let selectedSortField = 'name';
 let sortDirection = 'asc'; // 'asc' or 'desc'
+let selectedWeapon = null;
 
 function setActive(tab) {
   currentTab = tab;
+  selectedWeapon = null;
   renderTab();
 }
 
@@ -43,10 +46,17 @@ function renderTab() {
 
 function renderWeaponsTab(tabContent) {
   tabContent.innerHTML = `
-    <div class="mb-4 flex flex-col md:flex-row md:items-center md:gap-6 gap-3">
-      ${SortBar(sortFields, selectedSortField, sortDirection)}
+    <div class="flex flex-col md:flex-row gap-8 h-[600px]">
+      <div class="flex flex-col flex-1 min-w-[340px] max-w-[420px] h-full">
+        <div id="simulator-container" class="flex-1"></div>
+      </div>
+      <div class="flex-1 min-w-[340px] h-full flex flex-col">
+        <div class="mb-4 flex flex-col md:flex-row md:items-center md:gap-6 gap-3">
+          ${SortBar(sortFields, selectedSortField, sortDirection)}
+        </div>
+        <div id="weapons-list" class="flex-1 overflow-y-auto max-h-[540px]"></div>
+      </div>
     </div>
-    <div id="weapons-list"></div>
   `;
   document.getElementById('sort-dropdown').onchange = e => {
     selectedSortField = e.target.value;
@@ -57,6 +67,23 @@ function renderWeaponsTab(tabContent) {
     renderWeaponsTab(tabContent);
   };
   renderWeaponsList();
+  renderSimulatorAndLog();
+  window.addEventListener('simulator-update', renderSimulatorAndLog);
+}
+
+function renderSimulatorAndLog() {
+  const simContainer = document.getElementById('simulator-container');
+  if (!simContainer) return;
+  if (selectedWeapon) {
+    simContainer.innerHTML = WeaponSimulator({ weapon: selectedWeapon, gridSize: 20, onLog: updateSimLog });
+  } else {
+    simContainer.innerHTML = `<div class='text-center text-lg opacity-70 mt-12'>Select a weapon to visualize its effects.</div>`;
+    updateSimLog();
+  }
+}
+
+function updateSimLog() {
+  // No log rendering here; handled by WeaponSimulator
 }
 
 function renderWeaponsList() {
@@ -78,6 +105,14 @@ function renderWeaponsList() {
     return 0;
   });
   list.innerHTML = WeaponsList(sorted);
+  // Attach click handlers to weapon cards (now by index)
+  list.querySelectorAll('.cursor-pointer').forEach((el, idx) => {
+    el.onclick = () => {
+      const weapon = sorted[idx];
+      selectedWeapon = weapon;
+      renderSimulatorAndLog();
+    };
+  });
 }
 
 // Fetch weapons data once
