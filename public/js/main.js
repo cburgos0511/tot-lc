@@ -1,2 +1,5 @@
-// main.js
-// Add your main game logic here. This is a placeholder for modular imports. 
+import { SettingsModal, setupSettingsModal } from './settingmodal.js';
+
+document.body.insertAdjacentHTML('beforeend', SettingsModal());
+
+setupSettingsModal();
