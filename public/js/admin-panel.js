@@ -46,15 +46,15 @@ function renderTab() {
 
 function renderWeaponsTab(tabContent) {
   tabContent.innerHTML = `
-    <div class="flex flex-col md:flex-row gap-8 h-[600px]">
-      <div class="flex flex-col flex-1 min-w-[340px] max-w-[420px] h-full">
+    <div class="flex flex-col md:flex-row gap-6 md:gap-8 h-auto md:h-[600px]">
+      <div class="flex flex-col flex-1 min-w-0 max-w-full md:min-w-[340px] md:max-w-[420px] w-full h-full">
         <div id="simulator-container" class="flex-1"></div>
       </div>
-      <div class="flex-1 min-w-[340px] h-full flex flex-col">
+      <div class="flex-1 min-w-0 max-w-full md:min-w-[340px] h-full flex flex-col w-full">
         <div class="mb-4 flex flex-col md:flex-row md:items-center md:gap-6 gap-3">
           ${SortBar(sortFields, selectedSortField, sortDirection)}
         </div>
-        <div id="weapons-list" class="flex-1 overflow-y-auto max-h-[540px]"></div>
+        <div id="weapons-list" class="flex-1 overflow-y-auto max-h-[540px] md:max-h-[540px] w-full"></div>
       </div>
     </div>
   `;

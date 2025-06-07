@@ -168,7 +168,7 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
     </div>`;
   }
 
-  let gridHtml = '<div class="grid" style="display: grid; grid-template-columns: repeat(' + gridSize + ', 1fr); gap: 2px;">';
+  let gridHtml = '<div class="overflow-x-auto md:overflow-x-visible pb-2"><div class="grid" style="display: grid; grid-template-columns: repeat(' + gridSize + ', 1fr); gap: 2px; min-width: 480px;">';
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++) {
       let cellClass = 'bg-gray-800';
@@ -195,7 +195,7 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
       gridHtml += `<div class="w-6 h-6 ${cellClass} border border-gray-700 flex items-center justify-center" data-x="${x}" data-y="${y}">${content}</div>`;
     }
   }
-  gridHtml += '</div>';
+  gridHtml += '</div></div>';
 
   // Attach click handler after render
   setTimeout(() => {
@@ -232,7 +232,7 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
   }, 0);
 
   return `
-    <div>
+    <div class="px-1 md:px-0">
       <div class="flex flex-col gap-2 mb-2">
         ${healthBar(lastSimState.player.health, 'Player')}
         ${healthBar(lastSimState.enemy.health, 'Enemy')}
