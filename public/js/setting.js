@@ -1,3 +1,10 @@
+import { SettingsModal } from './components/settings/SettingsModal.js';
+
+// Inject the settings modal into the DOM if not already present
+if (!document.getElementById('setting-overlay')) {
+  document.body.insertAdjacentHTML('beforeend', SettingsModal());
+}
+
 // Settings overlay logic moved from index.html
 
 const settingOverlay = document.getElementById('setting-overlay');
