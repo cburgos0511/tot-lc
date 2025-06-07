@@ -4,6 +4,16 @@
 /**
  * Weapon Types: 'melee', 'short-range', 'mid-range', 'long-range', 'special'
  * Example attributes: name, type, range, damage, accuracy, specialAbility, image, description
+ *
+ * New fields:
+ * - piercing: number (how many enemies projectile can pass through)
+ * - splashRadius: number (area of effect radius, in tiles)
+ * - headshotChance: number (probability of double damage, 0-1)
+ * - burn: { duration: number } | null (burn effect duration in turns)
+ * - blind: { duration: number } | null (blind effect duration in turns)
+ * - specials: array of { type: string, ...params } (for extensibility)
+ *
+ * All special mechanics should be represented as explicit fields or in the specials array.
  */
 
 export const weaponTypes = ['melee', 'short-range', 'mid-range', 'long-range', 'special'];
@@ -16,51 +26,74 @@ export const weapons = [
     range: 1,
     damage: 15,
     accuracy: 0.95,
-    specialAbility: null,
+    piercing: 0,
+    splashRadius: null,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [],
     image: '/images/weapons/iron-sword.png',
     description: 'A basic iron sword. Reliable and sturdy.',
     rarity: 'common'
   },
-
-
   {
     name: 'Spear',
     type: 'melee',
     range: 2,
     damage: 13,
     accuracy: 0.92,
-    specialAbility: 'Reach (can attack from 2 tiles away)',
+    piercing: 0,
+    splashRadius: null,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'reach', value: 2 }
+    ],
     image: '/images/weapons/spear.png',
     description: 'Long reach, moderate damage.',
     rarity: 'uncommon'
   },
   // Short-range
-
   {
     name: 'Molotov Cocktail',
     type: 'short-range',
     range: 2,
     damage: 14,
     accuracy: 0.7,
-    specialAbility: 'Splash Damage (burns in a radius)',
+    piercing: 0,
+    splashRadius: 2,
+    headshotChance: 0,
+    burn: { duration: 2 },
+    blind: null,
+    specials: [
+      { type: 'splash', radius: 2 },
+      { type: 'burn', duration: 2 }
+    ],
     image: '/images/weapons/molotov.png',
     description: 'Explodes on impact, burning nearby tiles.',
     rarity: 'rare'
   },
   // Mid-range
-
   {
     name: 'Smoke Bomb',
     type: 'mid-range',
     range: 4,
     damage: 0,
     accuracy: 1.0,
-    specialAbility: 'Blind (reduces enemy accuracy)',
+    piercing: 0,
+    splashRadius: 2,
+    headshotChance: 0,
+    burn: null,
+    blind: { duration: 2 },
+    specials: [
+      { type: 'blind', duration: 2 },
+      { type: 'splash', radius: 2 }
+    ],
     image: '/images/weapons/smoke_bomb.png',
     description: 'No damage, but blinds enemies in an area.',
     rarity: 'uncommon'
   },
-
   // Long-range
   {
     name: 'Longbow',
@@ -68,7 +101,12 @@ export const weapons = [
     range: 10,
     damage: 18,
     accuracy: 0.8,
-    specialAbility: null,
+    piercing: 0,
+    splashRadius: null,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [],
     image: null,
     description: 'High damage at long distances.',
     rarity: 'rare'
@@ -79,7 +117,15 @@ export const weapons = [
     range: 12,
     damage: 22,
     accuracy: 0.75,
-    specialAbility: 'Headshot (chance for double damage) and piercing (can hit through multiple enemies)',
+    piercing: 1,
+    splashRadius: null,
+    headshotChance: 0.2,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'piercing', value: 1 },
+      { type: 'headshot', chance: 0.2 }
+    ],
     image: '/images/weapons/storm-trooper-rifle.png',
     description: 'Modern weapon, high damage, lower accuracy.',
     rarity: 'epic'
@@ -90,7 +136,15 @@ export const weapons = [
     range: 9,
     damage: 15,
     accuracy: 0.9,
-    specialAbility: 'Splash Damage (magic explosion)',
+    piercing: 0,
+    splashRadius: 2,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'splash', radius: 2 },
+      { type: 'magicExplosion', radius: 2 }
+    ],
     image: null,
     description: 'Casts spells with area effect.',
     rarity: 'epic'
@@ -101,7 +155,14 @@ export const weapons = [
     range: 8,
     damage: 20,
     accuracy: 0.7,
-    specialAbility: 'Splash Damage (large radius)',
+    piercing: 0,
+    splashRadius: 3,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'splash', radius: 3 }
+    ],
     image: null,
     description: 'Explosive rounds for maximum area damage.',
     rarity: 'epic'
@@ -112,7 +173,15 @@ export const weapons = [
     range: 15,
     damage: 30,
     accuracy: 0.6,
-    specialAbility: 'Pierce (can hit through multiple enemies)',
+    piercing: 2,
+    splashRadius: null,
+    headshotChance: 0.15,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'piercing', value: 2 },
+      { type: 'headshot', chance: 0.15 }
+    ],
     image: '/images/weapons/sniper.png',
     description: 'Extreme range and damage, but low accuracy.',
     rarity: 'legendary'
@@ -124,22 +193,34 @@ export const weapons = [
     range: 1,
     damage: 28,
     accuracy: 0.85,
-    specialAbility: 'Chain Lightning (hits multiple enemies in a line)',
+    piercing: 0,
+    splashRadius: null,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'chainLightning', targets: 3 }
+    ],
     image: null,
     description: 'Unleashes lightning on impact.',
     rarity: 'epic'
   },
-
   {
     name: 'Gravity Gun',
     type: 'special',
     range: 6,
     damage: 10,
     accuracy: 0.9,
-    specialAbility: 'Pull (draws enemies together in a radius)',
+    piercing: 0,
+    splashRadius: 2,
+    headshotChance: 0,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: 'pull', radius: 2 }
+    ],
     image: null,
     description: 'Manipulates the battlefield with gravity.',
     rarity: 'epic'
   },
-
 ]; 

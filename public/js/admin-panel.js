@@ -9,7 +9,10 @@ const sortFields = [
   { key: 'name', label: 'Name' },
   { key: 'damage', label: 'Damage' },
   { key: 'rarity', label: 'Rarity' },
-  { key: 'range', label: 'Range' }
+  { key: 'range', label: 'Range' },
+  { key: 'piercing', label: 'Piercing' },
+  { key: 'splashRadius', label: 'Splash Radius' },
+  { key: 'headshotChance', label: 'Headshot Chance' }
 ];
 let weaponsData = [];
 let selectedSortField = 'name';
@@ -67,6 +70,9 @@ function renderWeaponsList() {
       va = order.indexOf(va);
       vb = order.indexOf(vb);
     }
+    // Handle undefined/null values for new fields
+    if (va === undefined || va === null) va = -Infinity;
+    if (vb === undefined || vb === null) vb = -Infinity;
     if (va < vb) return sortDirection === 'asc' ? -1 : 1;
     if (va > vb) return sortDirection === 'asc' ? 1 : -1;
     return 0;
