@@ -5,7 +5,7 @@ import { WeaponSimulator } from './components/admin-panel/WeaponSimulator.js';
 import { renderLayoutCreator } from './components/admin-panel/LayoutCreator.js';
 
 const tabs = ['weapons', 'lighthouse', 'characters', 'layout'];
-let currentTab = 'weapons';
+let currentTab = 'layout';
 const content = document.getElementById('admin-content');
 const sortFields = [
   { key: 'name', label: 'Name' },
