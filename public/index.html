@@ -6,14 +6,17 @@
     <!-- Tailwind CDN for development. Switch to /dist/output.css for production build. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link href="/dist/output.css" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+      rel="stylesheet"
+    />
     <script>
       tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: {
-        orbitron: ['Orbitron', 'sans-serif'],  
-      },
+        theme: {
+          extend: {
+            fontFamily: {
+              orbitron: ['Orbitron', 'sans-serif'],
+            },
             keyframes: {
               possessed: {
                 '0%': { transform: 'translate(0, 0) rotate(0deg) scale(1)' },
@@ -91,7 +94,7 @@
         <h1
           class="text-6xl md:text-7xl font-orbitron tracking-wider animate-possessed bg-gradient-to-r from-blue-600 via-red-500 to-purple-700 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(0,0,0,1)] select-none cursor-default -mt-32 mb-10"
         >
-        Galactic Defense
+          Galactic Defense
         </h1>
 
         <p
@@ -102,24 +105,14 @@
         <div class="flex items-center justify-center gap-8 mb-12">
           <button
             id="start-btn"
-            class="bg-gradient-to-b from-purple-700 to-red-900
-            text-white
-            font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-blue-800 animate-glowPulse 
-            hover:bg-gradient-to-b from-purple-600 to-red-800 hover:scale-105 active:scale-95
-            transition-transform transition-colors duration-200 ease-in-out select-none cursor-pointer tracking-wider font-serif mb-4
-            "
+            class="bg-gradient-to-b from-purple-700 to-red-900 text-white font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-blue-800 animate-glowPulse hover:bg-gradient-to-b from-purple-600 to-red-800 hover:scale-105 active:scale-95 transition-transform transition-colors duration-200 ease-in-out select-none cursor-pointer tracking-wider font-serif mb-4"
           >
             Start Game
           </button>
 
           <button
             id="settings-button-main"
-            class= "bg-gradient-to-b from-purple-700 to-red-900
-            text-white
-            font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-blue-800 animate-glowPulse 
-            hover:bg-gradient-to-b from-purple-600 to-red-800 hover:scale-105 active:scale-95
-            transition-transform transition-colors duration-200 ease-in-out select-none cursor-pointer tracking-wider font-serif mb-4
-            "
+            class="bg-gradient-to-b from-purple-700 to-red-900 text-white font-black text-lg uppercase px-8 py-3 rounded-md border-4 border-blue-800 animate-glowPulse hover:bg-gradient-to-b from-purple-600 to-red-800 hover:scale-105 active:scale-95 transition-transform transition-colors duration-200 ease-in-out select-none cursor-pointer tracking-wider font-serif mb-4"
           >
             ⚙️ Setting
           </button>
@@ -172,19 +165,13 @@
 
         <div class="relative z-10 p-6 max-w-4xl mx-auto pt-10">
           <h1 class="text-white text-3xl font-bold mb-6 text-center">Levels</h1>
-          <div id="button-container" class="grid grid-cols-5 gap-4">
-          </div>
+          <div id="button-container" class="grid grid-cols-5 gap-4"></div>
         </div>
       </div>
     </div>
 
-    <script type="module" src="/js/health.js"></script>
-    <script type="module" src="/js/main.js"></script>
     <script type="module" src="/js/start.js"></script>
     <script type="module" src="/js/setting.js"></script>
     <script type="module" src="/js/levelsbuttons.js"></script>
   </body>
 </html>
-
-
-

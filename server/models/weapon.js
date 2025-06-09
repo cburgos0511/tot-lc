@@ -223,4 +223,71 @@ export const weapons = [
     description: 'Manipulates the battlefield with gravity.',
     rarity: 'epic'
   },
-]; 
+];
+
+// Weapon Schema (Pseudocode/Comments)
+// This file defines the structure for a Weapon in the game.
+// Use this as a reference for implementing the actual model (e.g., with Mongoose, Sequelize, or plain JS classes).
+
+/* eslint-disable no-unused-vars */
+/**
+ * Weapon Model
+ *
+ * Fields:
+ * - id: Unique identifier (string or ObjectId)
+ * - name: Weapon's name (string)
+ * - type: Weapon type/category (string, e.g., 'melee', 'ranged', 'explosive')
+ * - damage: Base damage (number)
+ * - range: Number of squares weapon can reach (number)
+ * - accuracy: Hit chance (0-1 float)
+ * - headshotChance: Chance for headshot (0-1 float)
+ * - specials: Array of special effect objects (see below)
+ * - rarity: (Optional) Rarity level (string, e.g., 'common', 'rare')
+ * - piercing: (Optional) Number of targets pierced (number)
+ * - splashRadius: (Optional) Area of effect radius (number)
+ * - burn: (Optional) Burn effect object (see status effects)
+ * - bleed: (Optional) Bleed effect object
+ * - blind: (Optional) Blind effect object
+ * - ammo: (Optional) Ammo count or type (number or string)
+ * - weight: (Optional) Weapon weight (number)
+ * - description: (Optional) Weapon description (string)
+ * - image: (Optional) Image URL or path (string)
+ * - owner: (Optional) Character id or reference
+ *
+ * Example Special Effect Object:
+ * {
+ *   type: 'piercing',
+ *   value: 2 // pierces 2 targets
+ * }
+ *
+ * Example Burn Effect Object:
+ * {
+ *   duration: 2, // turns
+ *   potency: 5 // damage per turn
+ * }
+ */
+
+// Pseudocode for Weapon schema definition
+const Weapon = {
+  id: 'string',
+  name: 'string',
+  type: 'melee', // e.g., 'melee', 'ranged', 'explosive'
+  damage: 10,
+  range: 1,
+  accuracy: 0.8,
+  headshotChance: 0.1,
+  specials: [/* special effect objects */],
+  rarity: 'common',
+  piercing: 0,
+  splashRadius: 0,
+  burn: null, // { duration, potency }
+  bleed: null, // { duration, potency }
+  blind: null, // { duration, potency }
+  ammo: null,
+  weight: 1,
+  description: '',
+  image: '',
+  owner: null,
+};
+
+// Export or use as a reference for your actual model implementation 

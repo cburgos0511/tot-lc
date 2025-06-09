@@ -1,3 +1,5 @@
+import kaboom from "kaboom";
+
 let lastSimState = null;
 
 function getTimeString() {
@@ -22,6 +24,142 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
     };
   }
 
+  // Kaboom constants
+  const CELL_SIZE = 28;
+  const WIDTH = gridSize * CELL_SIZE;
+  const HEIGHT = gridSize * CELL_SIZE;
+  const CANVAS_ID = `kaboom-sim-canvas-${weapon.name.replace(/\W/g, '')}`;
+
+  // Mount point for Kaboom
+  setTimeout(() => {
+    let root = document.getElementById(CANVAS_ID);
+    if (!root) return;
+    // Only initialize Kaboom if not already initialized for this root
+    if (!root._kaboom) {
+      root.innerHTML = '';
+      const k = kaboom({ root, width: WIDTH, height: HEIGHT, background: [34, 34, 34], global: false });
+      root._kaboom = k;
+      const { add, rect, pos, color, area, onClick, onMouseMove, rgb, z, opacity, mousePos, destroyAll } = k;
+
+      // Draw grid (static, only once)
+      for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+          add([
+            rect(CELL_SIZE - 2, CELL_SIZE - 2),
+            pos(x * CELL_SIZE + 1, y * CELL_SIZE + 1),
+            color(60, 60, 60),
+            area(),
+            'grid-cell',
+            { gridX: x, gridY: y }
+          ]);
+        }
+      }
+
+      // Draw overlays and entities (dynamic)
+      function drawEntities() {
+        destroyAll('overlay');
+        destroyAll('entity');
+        // Range overlay (light green, lowest z)
+        for (let x = 0; x < gridSize; x++) {
+          for (let y = 0; y < gridSize; y++) {
+            if (inRange(x, y)) {
+              add([
+                rect(CELL_SIZE - 4, CELL_SIZE - 4),
+                pos(x * CELL_SIZE + 2, y * CELL_SIZE + 2),
+                color(180, 255, 180), // very light green
+                opacity(0.18),
+                z(1),
+                'overlay',
+              ]);
+            }
+          }
+        }
+        // Overlays
+        for (let x = 0; x < gridSize; x++) {
+          for (let y = 0; y < gridSize; y++) {
+            let overlay = getOverlay(x, y);
+            if (overlay) {
+              let overlayColor =
+                overlay === 'aim' ? rgb(255, 230, 80) :
+                  overlay === 'aim-splash' ? rgb(255, 180, 220) :
+                    overlay === 'splash' ? rgb(255, 120, 180) :
+                      overlay === 'pierce' ? rgb(255, 255, 80) :
+                        overlay === 'burn' ? rgb(180, 30, 30) :
+                          overlay === 'blind' ? rgb(255, 255, 180) :
+                            null;
+              if (overlayColor) {
+                add([
+                  rect(CELL_SIZE - 4, CELL_SIZE - 4),
+                  pos(x * CELL_SIZE + 2, y * CELL_SIZE + 2),
+                  color(overlayColor),
+                  opacity(0.7),
+                  z(10),
+                  'overlay',
+                ]);
+              }
+            }
+          }
+        }
+        // Player
+        add([
+          rect(CELL_SIZE - 6, CELL_SIZE - 6),
+          pos(lastSimState.player.x * CELL_SIZE + 3, lastSimState.player.y * CELL_SIZE + 3),
+          color(80, 160, 255),
+          z(20),
+          'entity',
+        ]);
+        // Enemy
+        add([
+          rect(CELL_SIZE - 6, CELL_SIZE - 6),
+          pos(lastSimState.enemy.x * CELL_SIZE + 3, lastSimState.enemy.y * CELL_SIZE + 3),
+          color(255, 80, 80),
+          z(20),
+          'entity',
+        ]);
+        // Shot
+        if (lastSimState.shot) {
+          add([
+            rect(CELL_SIZE - 10, CELL_SIZE - 10),
+            pos(lastSimState.shot.x * CELL_SIZE + 5, lastSimState.shot.y * CELL_SIZE + 5),
+            color(255, 80, 80),
+            z(30),
+            'entity',
+          ]);
+        }
+      }
+      root._drawEntities = drawEntities;
+      drawEntities();
+
+      // Mouse interaction
+      onClick(() => {
+        const mouse = mousePos();
+        const x = Math.floor(mouse.x / CELL_SIZE);
+        const y = Math.floor(mouse.y / CELL_SIZE);
+        if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return;
+        handleCellClick(x, y);
+        drawEntities();
+      });
+      // Hover aim
+      onMouseMove(() => {
+        const mouse = mousePos();
+        const x = Math.floor(mouse.x / CELL_SIZE);
+        const y = Math.floor(mouse.y / CELL_SIZE);
+        if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return;
+        if (lastSimState.mode === 'shoot' && inRange(x, y)) {
+          lastSimState.aim = { x, y };
+        } else {
+          lastSimState.aim = null;
+        }
+        drawEntities();
+      });
+      // Redraw on state update
+      window.addEventListener('simulator-update', drawEntities);
+    } else {
+      // If already initialized, just update entities
+      if (root._drawEntities) root._drawEntities();
+    }
+  }, 0);
+
   function inRange(x, y) {
     const dx = Math.abs(x - lastSimState.player.x);
     const dy = Math.abs(y - lastSimState.player.y);
@@ -30,9 +168,7 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
 
   function getOverlay(x, y) {
     if (lastSimState.aim) {
-      // Show aim marker
       if (x === lastSimState.aim.x && y === lastSimState.aim.y) return 'aim';
-      // Show splash radius overlay while aiming
       if (weapon.splashRadius) {
         const dx = Math.abs(x - lastSimState.aim.x);
         const dy = Math.abs(y - lastSimState.aim.y);
@@ -40,18 +176,15 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
       }
     }
     if (!lastSimState.shot) return null;
-    // Splash
     if (weapon.splashRadius && lastSimState.shot) {
       const dx = Math.abs(x - lastSimState.shot.x);
       const dy = Math.abs(y - lastSimState.shot.y);
       if (dx + dy <= weapon.splashRadius) return 'splash';
     }
-    // Piercing (draw a line from char to shot)
     if (weapon.piercing && lastSimState.shot) {
       if (x === lastSimState.player.x && y >= Math.min(lastSimState.player.y, lastSimState.shot.y) && y <= Math.max(lastSimState.player.y, lastSimState.shot.y)) return 'pierce';
       if (y === lastSimState.player.y && x >= Math.min(lastSimState.player.x, lastSimState.shot.x) && x <= Math.max(lastSimState.player.x, lastSimState.shot.x)) return 'pierce';
     }
-    // Burn/Blind overlays
     if (weapon.burn && lastSimState.shot && x === lastSimState.shot.x && y === lastSimState.shot.y) return 'burn';
     if (weapon.blind && lastSimState.shot && x === lastSimState.shot.x && y === lastSimState.shot.y) return 'blind';
     return null;
@@ -68,6 +201,7 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
     if (!inRange(x, y)) return;
     // Set aim, do not shoot yet
     lastSimState.aim = { x, y };
+    shoot();
     rerender();
   }
 
@@ -78,16 +212,13 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
     let log = [];
     let playerHit = false;
     let enemyHit = false;
-    // Headshot
     let headshot = false;
     if (weapon.headshotChance && Math.random() < weapon.headshotChance) {
       log.push('Headshot!');
       headshot = true;
     }
-    // Splash
     if (weapon.splashRadius) {
       log.push(`Splash occurred at (${x}, ${y}) with radius ${weapon.splashRadius}`);
-      // Check if splash hits player or enemy
       const splashCells = [];
       for (let sy = 0; sy < gridSize; sy++) {
         for (let sx = 0; sx < gridSize; sx++) {
@@ -101,31 +232,24 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
         if (sx === lastSimState.enemy.x && sy === lastSimState.enemy.y) enemyHit = true;
       });
     }
-    // Direct hit
     if (x === lastSimState.enemy.x && y === lastSimState.enemy.y) enemyHit = true;
     if (x === lastSimState.player.x && y === lastSimState.player.y) playerHit = true;
-    // Piercing
     if (weapon.piercing) {
       log.push(`Piercing shot through up to ${weapon.piercing} enemies.`);
-      // If enemy is on the line
       if ((x === lastSimState.enemy.x && lastSimState.player.x === lastSimState.enemy.x) ||
         (y === lastSimState.enemy.y && lastSimState.player.y === lastSimState.enemy.y)) {
         enemyHit = true;
       }
     }
-    // Burn
     if (weapon.burn) {
       log.push(`Burning for ${weapon.burn.duration} turns.`);
     }
-    // Blind
     if (weapon.blind) {
       log.push(`Blinded for ${weapon.blind.duration} turns.`);
     }
-    // Specials
     if (weapon.specials && weapon.specials.length > 0) {
       log.push('Specials: ' + weapon.specials.map(s => s.type).join(', '));
     }
-    // Apply damage
     let damage = weapon.damage;
     if (headshot) damage *= 2;
     if (enemyHit) {
@@ -136,16 +260,10 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
       lastSimState.player.health = Math.max(0, lastSimState.player.health - damage);
       log.push(`Player took ${damage} damage! (HP: ${lastSimState.player.health})`);
     }
-    // Add log with timestamp
     log.forEach(msg => {
       lastSimState.log.push({ time: getTimeString(), message: msg });
     });
     if (onLog) onLog(lastSimState.log);
-    lastSimState.aim = null;
-    rerender();
-  }
-
-  function cancelAim() {
     lastSimState.aim = null;
     rerender();
   }
@@ -155,62 +273,6 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
       window.dispatchEvent(new CustomEvent('simulator-update'));
     }
   }
-
-  // Move enemy button
-  let moveEnemyBtn = `<button id="move-enemy-btn" class="mb-2 px-3 py-1 rounded bg-yellow-700 text-white font-semibold hover:bg-yellow-800 transition">Move Enemy</button>`;
-
-  // Shoot/cancel buttons
-  let shootBtns = '';
-  if (lastSimState.aim) {
-    shootBtns = `<div class="flex gap-2 mt-2">
-      <button id="shoot-btn" class="px-3 py-1 rounded bg-green-700 text-white font-semibold hover:bg-green-800 transition">Shoot</button>
-      <button id="cancel-aim-btn" class="px-3 py-1 rounded bg-gray-700 text-white font-semibold hover:bg-gray-800 transition">Cancel</button>
-    </div>`;
-  }
-
-  let gridHtml = '<div class="overflow-x-auto md:overflow-x-visible pb-2"><div class="grid" style="display: grid; grid-template-columns: repeat(' + gridSize + ', 1fr); gap: 2px; min-width: 480px;">';
-  for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++) {
-      let cellClass = 'bg-gray-800';
-      let content = '';
-      if (x === lastSimState.player.x && y === lastSimState.player.y) {
-        cellClass = 'bg-blue-500';
-        content = '<span class="block w-full h-full text-center text-xs text-white">P</span>';
-      } else if (x === lastSimState.enemy.x && y === lastSimState.enemy.y) {
-        cellClass = 'bg-red-600';
-        content = '<span class="block w-full h-full text-center text-xs text-white">E</span>';
-      } else if (lastSimState.shot && x === lastSimState.shot.x && y === lastSimState.shot.y) {
-        cellClass = 'bg-red-500';
-      } else if (inRange(x, y)) {
-        cellClass = 'bg-green-600 cursor-pointer hover:bg-green-700';
-      }
-      // Overlays
-      const overlay = getOverlay(x, y);
-      if (overlay === 'aim') cellClass = 'bg-yellow-300';
-      if (overlay === 'aim-splash') cellClass = 'bg-pink-200';
-      if (overlay === 'splash') cellClass = 'bg-pink-400';
-      if (overlay === 'pierce') cellClass = 'bg-yellow-400';
-      if (overlay === 'burn') cellClass = 'bg-red-700';
-      if (overlay === 'blind') cellClass = 'bg-yellow-200';
-      gridHtml += `<div class="w-6 h-6 ${cellClass} border border-gray-700 flex items-center justify-center" data-x="${x}" data-y="${y}">${content}</div>`;
-    }
-  }
-  gridHtml += '</div></div>';
-
-  // Attach click handler after render
-  setTimeout(() => {
-    document.querySelectorAll('.grid [data-x][data-y]').forEach(cell => {
-      const x = parseInt(cell.getAttribute('data-x'));
-      const y = parseInt(cell.getAttribute('data-y'));
-      cell.onclick = () => handleCellClick(x, y);
-    });
-    const btn = document.getElementById('move-enemy-btn');
-    if (btn) btn.onclick = () => { lastSimState.mode = 'move-enemy'; };
-    const shootBtn = document.getElementById('shoot-btn');
-    if (shootBtn) shootBtn.onclick = shoot;
-    const cancelBtn = document.getElementById('cancel-aim-btn');
-    if (cancelBtn) cancelBtn.onclick = cancelAim;
-  }, 0);
 
   // Health bars
   function healthBar(hp, label) {
@@ -231,6 +293,14 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
     if (logDiv) logDiv.scrollTop = logDiv.scrollHeight;
   }, 0);
 
+  // Move enemy button
+  const moveEnemyBtn = `<button id="move-enemy-btn" class="mb-2 px-3 py-1 rounded bg-yellow-700 text-white font-semibold hover:bg-yellow-800 transition">Move Enemy</button>`;
+  setTimeout(() => {
+    const btn = document.getElementById('move-enemy-btn');
+    if (btn) btn.onclick = () => { lastSimState.mode = 'move-enemy'; };
+  }, 0);
+
+  // Render
   return `
     <div class="px-1 md:px-0">
       <div class="flex flex-col gap-2 mb-2">
@@ -239,9 +309,8 @@ export function WeaponSimulator({ weapon, gridSize = 20, onLog }) {
         ${moveEnemyBtn}
       </div>
       <div class="mb-2 font-semibold">Grid World (${gridSize}x${gridSize})</div>
-      ${gridHtml}
-      ${shootBtns}
-      <div class="mt-2 text-sm opacity-70">Blue: Player | Red: Enemy | Green: In Range | Yellow: Aim | <span class='bg-pink-200 px-1 rounded'>Pink-light: Aim Splash</span> | Red: Shot | Pink: Splash | Yellow: Pierce/Blind | Red-dark: Burn</div>
+      <div id="${CANVAS_ID}" style="width:${WIDTH}px;height:${HEIGHT}px;background:#222;"></div>
+      <div class="mt-2 text-sm opacity-70">Blue: Player | Red: Enemy | Yellow: Aim | Pink-light: Aim Splash | Red: Shot | Pink: Splash | Yellow: Pierce/Blind | Red-dark: Burn</div>
       <div class="mt-2">${renderLog()}</div>
     </div>
   `;

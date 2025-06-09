@@ -1,9 +1,10 @@
-import { TabBar } from './components/TabBar.js';
-import { SortBar } from './components/SortBar.js';
-import { WeaponsList } from './components/WeaponsList.js';
-import { WeaponSimulator } from './components/WeaponSimulator.js';
+import { TabBar } from './components/admin-panel/TabBar.js';
+import { SortBar } from './components/admin-panel/SortBar.js';
+import { WeaponsList } from './components/admin-panel/WeaponsList.js';
+import { WeaponSimulator } from './components/admin-panel/WeaponSimulator.js';
+import { renderLayoutCreator } from './components/admin-panel/LayoutCreator.js';
 
-const tabs = ['weapons', 'lighthouse', 'characters'];
+const tabs = ['weapons', 'lighthouse', 'characters', 'layout'];
 let currentTab = 'weapons';
 const content = document.getElementById('admin-content');
 const sortFields = [
@@ -41,6 +42,8 @@ function renderTab() {
     tabContent.innerHTML = '<div class="text-center text-lg opacity-80">Lighthouse tab coming soon...</div>';
   } else if (currentTab === 'characters') {
     tabContent.innerHTML = '<div class="text-center text-lg opacity-80">Characters tab coming soon...</div>';
+  } else if (currentTab === 'layout') {
+    renderLayoutCreator(tabContent);
   }
 }
 
@@ -116,9 +119,19 @@ function renderWeaponsList() {
 }
 
 // Fetch weapons data once
-fetch('/api/weapons').then(r => r.json()).then(data => {
-  weaponsData = data;
-  if (currentTab === 'weapons') renderTab();
-});
+fetch('http://localhost:3002/api/weapons')
+  .then(r => {
+    if (!r.ok) throw new Error('Network response was not ok');
+    return r.json();
+  })
+  .then(data => {
+    console.log('Fetched weapons:', data);
+    weaponsData = data;
+    if (currentTab === 'weapons') renderTab();
+  })
+  .catch(err => {
+    console.error('Failed to fetch weapons:', err);
+    alert('Failed to fetch weapons: ' + err.message);
+  });
 
 renderTab(); 

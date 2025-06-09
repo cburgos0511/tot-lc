@@ -1,6 +1,7 @@
 /* global process */
 // Import the Express framework for building the web server
 import express from 'express';
+import cors from 'cors';
 
 // Import Node's path module for handling and transforming file paths
 import path from 'path';
@@ -19,13 +20,16 @@ import adminPanelRouter from './routes/adminPanel.js';
 const app = express();
 
 // Set the port for the server to listen on. Use the environment variable PORT if available, otherwise default to 3000.
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 // Get the current file's absolute path (since __filename is not available in ES modules)
 const __filename = fileURLToPath(import.meta.url);
 
 // Get the directory name of the current module file (since __dirname is not available in ES modules)
 const __dirname = path.dirname(__filename);
+
+// Allow CORS from Vite dev server
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 // Serve static files (HTML, CSS, JS, images, etc.) from the 'public' directory
 // This allows users to access files in 'public' directly via the browser
