@@ -12,215 +12,94 @@
  * - burn: { duration: number } | null (burn effect duration in turns)
  * - blind: { duration: number } | null (blind effect duration in turns)
  * - specials: array of { type: string, ...params } (for extensibility)
+ * - upgradePath: array of { level: integer, damage: integer, accuracy: number, special: object, etc. }
+ * - weight: number (calculated based on type and upgrades)
  *
  * All special mechanics should be represented as explicit fields or in the specials array.
+ *
+ * Example extensibility: Add new upgrade paths and weight logic per weapon type.
  */
 
 export const weaponTypes = ['melee', 'short-range', 'mid-range', 'long-range', 'special'];
 
 export const weapons = [
-  // Melee
+  // Lightsaber (Melee)
   {
-    name: 'Iron Sword',
+    name: 'Lightsaber',
     type: 'melee',
     range: 1,
-    damage: 15,
-    accuracy: 0.95,
-    piercing: 0,
+    damage: 25,
+    accuracy: 0.98,
+    piercing: 2,
     splashRadius: null,
-    headshotChance: 0,
-    burn: null,
-    blind: null,
-    specials: [],
-    image: '/images/weapons/iron-sword.png',
-    description: 'A basic iron sword. Reliable and sturdy.',
-    rarity: 'common'
-  },
-  {
-    name: 'Spear',
-    type: 'melee',
-    range: 2,
-    damage: 13,
-    accuracy: 0.92,
-    piercing: 0,
-    splashRadius: null,
-    headshotChance: 0,
+    headshotChance: 0.1,
     burn: null,
     blind: null,
     specials: [
-      { type: 'reach', value: 2 }
+      { type: 'deflect', chance: 0.3 },
+      { type: 'energy', effect: 'ignores normal armor' }
     ],
-    image: '/images/weapons/spear.png',
-    description: 'Long reach, moderate damage.',
-    rarity: 'uncommon'
+    image: '/images/weapons/lightsaber.png',
+    description: 'A Jedi or Sith weapon. Can deflect blaster bolts and cut through almost anything.',
+    rarity: 'legendary',
+    weight: 4,
+    upgradePath: [
+      { level: 2, damage: 28, accuracy: 0.99 },
+      { level: 3, damage: 32, accuracy: 0.99 },
+      { level: 4, damage: 36, accuracy: 1.0 },
+      { level: 5, damage: 40, accuracy: 1.0 }
+    ]
   },
-  // Short-range
+  // Blaster (Short/Mid-range)
   {
-    name: 'Molotov Cocktail',
-    type: 'short-range',
-    range: 2,
-    damage: 14,
-    accuracy: 0.7,
-    piercing: 0,
-    splashRadius: 2,
-    headshotChance: 0,
-    burn: { duration: 2 },
-    blind: null,
-    specials: [
-      { type: 'splash', radius: 2 },
-      { type: 'burn', duration: 2 }
-    ],
-    image: '/images/weapons/molotov.png',
-    description: 'Explodes on impact, burning nearby tiles.',
-    rarity: 'rare'
-  },
-  // Mid-range
-  {
-    name: 'Smoke Bomb',
+    name: 'Blaster',
     type: 'mid-range',
-    range: 4,
-    damage: 0,
-    accuracy: 1.0,
+    range: 6,
+    damage: 15,
+    accuracy: 0.85,
     piercing: 0,
-    splashRadius: 2,
-    headshotChance: 0,
-    burn: null,
-    blind: { duration: 2 },
-    specials: [
-      { type: 'blind', duration: 2 },
-      { type: 'splash', radius: 2 }
-    ],
-    image: '/images/weapons/smoke_bomb.png',
-    description: 'No damage, but blinds enemies in an area.',
-    rarity: 'uncommon'
-  },
-  // Long-range
-  {
-    name: 'Longbow',
-    type: 'long-range',
-    range: 10,
-    damage: 18,
-    accuracy: 0.8,
-    piercing: 0,
-    splashRadius: null,
-    headshotChance: 0,
-    burn: null,
-    blind: null,
-    specials: [],
-    image: null,
-    description: 'High damage at long distances.',
-    rarity: 'rare'
-  },
-  {
-    name: 'Storm Trooper Rifle',
-    type: 'long-range',
-    range: 12,
-    damage: 22,
-    accuracy: 0.75,
-    piercing: 1,
     splashRadius: null,
     headshotChance: 0.2,
     burn: null,
     blind: null,
     specials: [
-      { type: 'piercing', value: 1 },
-      { type: 'headshot', chance: 0.2 }
+      { type: 'rapidFire', shots: 2 }
     ],
-    image: '/images/weapons/storm-trooper-rifle.png',
-    description: 'Modern weapon, high damage, lower accuracy.',
-    rarity: 'epic'
+    image: '/images/weapons/blaster.png',
+    description: 'Standard issue for many in the galaxy. Reliable and quick.',
+    rarity: 'rare',
+    weight: 3,
+    upgradePath: [
+      { level: 2, damage: 17, accuracy: 0.87 },
+      { level: 3, damage: 19, accuracy: 0.89 },
+      { level: 4, damage: 22, accuracy: 0.91 },
+      { level: 5, damage: 25, accuracy: 0.93 }
+    ]
   },
+  // Vibro-ax (Long weapon)
   {
-    name: 'Magic Staff',
+    name: 'Vibro-ax',
     type: 'long-range',
-    range: 9,
-    damage: 15,
-    accuracy: 0.9,
-    piercing: 0,
-    splashRadius: 2,
-    headshotChance: 0,
-    burn: null,
-    blind: null,
-    specials: [
-      { type: 'splash', radius: 2 },
-      { type: 'magicExplosion', radius: 2 }
-    ],
-    image: null,
-    description: 'Casts spells with area effect.',
-    rarity: 'epic'
-  },
-  {
-    name: 'Grenade Launcher',
-    type: 'long-range',
-    range: 8,
+    range: 2,
     damage: 20,
-    accuracy: 0.7,
-    piercing: 0,
-    splashRadius: 3,
-    headshotChance: 0,
-    burn: null,
-    blind: null,
-    specials: [
-      { type: 'splash', radius: 3 }
-    ],
-    image: null,
-    description: 'Explosive rounds for maximum area damage.',
-    rarity: 'epic'
-  },
-  {
-    name: 'Sniper Rifle',
-    type: 'long-range',
-    range: 15,
-    damage: 30,
-    accuracy: 0.6,
-    piercing: 2,
-    splashRadius: null,
-    headshotChance: 0.15,
-    burn: null,
-    blind: null,
-    specials: [
-      { type: 'piercing', value: 2 },
-      { type: 'headshot', chance: 0.15 }
-    ],
-    image: '/images/weapons/sniper.png',
-    description: 'Extreme range and damage, but low accuracy.',
-    rarity: 'legendary'
-  },
-  // Special
-  {
-    name: 'Thunder Hammer',
-    type: 'special',
-    range: 1,
-    damage: 28,
-    accuracy: 0.85,
-    piercing: 0,
-    splashRadius: null,
-    headshotChance: 0,
-    burn: null,
-    blind: null,
-    specials: [
-      { type: 'chainLightning', targets: 3 }
-    ],
-    image: null,
-    description: 'Unleashes lightning on impact.',
-    rarity: 'epic'
-  },
-  {
-    name: 'Gravity Gun',
-    type: 'special',
-    range: 6,
-    damage: 10,
     accuracy: 0.9,
-    piercing: 0,
-    splashRadius: 2,
-    headshotChance: 0,
+    piercing: 1,
+    splashRadius: null,
+    headshotChance: 0.05,
     burn: null,
     blind: null,
     specials: [
-      { type: 'pull', radius: 2 }
+      { type: 'heavy', effect: 'can stagger enemies' }
     ],
-    image: null,
-    description: 'Manipulates the battlefield with gravity.',
-    rarity: 'epic'
-  },
+    image: '/images/weapons/vibro-ax.png',
+    description: 'A heavy, long weapon favored by Gamorreans and other brutes.',
+    rarity: 'epic',
+    weight: 6,
+    upgradePath: [
+      { level: 2, damage: 23, accuracy: 0.91 },
+      { level: 3, damage: 26, accuracy: 0.92 },
+      { level: 4, damage: 30, accuracy: 0.93 },
+      { level: 5, damage: 34, accuracy: 0.94 }
+    ]
+  }
 ]; 
