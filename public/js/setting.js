@@ -29,3 +29,4 @@ if (settingOverlay && closeButton) {
   }
   closeButton.addEventListener('click', closeSettings);
 }
+
