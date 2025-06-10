@@ -1,12 +1,18 @@
-import { SettingsModal, setupSettingsModal } from "./settingmodal.js";
+import { SettingsModal, setupSettingsModal } from "/js/components/settingmodal.js";
 
-import { mainScreenui } from "/js/ui/mainscreen.js";
-
-import { startScreenui } from "/js/ui/startscreen.js";
+import { MainScreen } from '/js/screens/MainScreen.js';
+import { StartScreen } from '/js/screens/StartScreen.js';
+import { ScreenManager } from '/js/screens/ScreenManager.js';
 
 document.body.insertAdjacentHTML('beforeend', SettingsModal());
 setupSettingsModal();
 
-mainScreenui();
+// Show main screen on load
+ScreenManager('main-screen', MainScreen);
 
-startScreenui();
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'start-btn') {
+    ScreenManager('start-screen', StartScreen);
+  }
+  // Add more screen switches as needed
+});
