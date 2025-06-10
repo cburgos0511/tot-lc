@@ -1,107 +1,120 @@
 // Character Model
-// TODO: Define character schema/model 
+// Defines the structure for a character in the game
 
-export const CharacterTypes = ["Jedi,", "Smuggler", "Wookie", "Droid", "Princess", "Jedi Master", "Mandolorian", "Bounty Hunter"];
+/**
+ * Character Schema:
+ * - id: string (UUID)
+ * - name: string
+ * - skills: array of { name: string, description: string, effect: object }
+ * - speed: integer (number of squares the character can move)
+ * - defense: integer (reduces incoming damage)
+ * - special: { name: string, description: string, effect: object }
+ * - clothing: array of string (UUIDs referencing clothing items)
+ * - weapons: array of string (UUIDs referencing weapons, up to 2 or 3 for special cases)
+ * - health: integer
+ * - type: ["Jedi,", "Smuggler", "Wookie", "Droid", "Princess", "Jedi Master", "Mandolorian", "Bounty Hunter"];
+ * - isGood: boolean
+ * - level: integer (1-5)
+ * - experience: integer (XP needed for next level)
+ * - upgradePath: array of { level: integer, speed: integer, defense: integer, health: integer, skills: array, special: object }
+ */
+export const characterTypes = ["Jedi,", "Smuggler", "Wookie", "Droid", "Princess", "Jedi Master", "Mandolorian", "Bounty Hunter"];
 
 export const characters = [
-
-{
-  name: "Luke Skywalker",
-  type: "Jedi",
-  strength: "Speed",
-  Weapons: "",
-  specialWeapon: "Light Saber",
-  power: "0.6",
-  forcePower: "O.9",
-  stealth: "0.8",
-  healingEfficincy: "0.7"
-},
+ 
   {
-  name: "Han Solo",
-  type: "Smuggler",
-  strength: "Accuracy",
-  Weapons: "",
-  specialWeapon: "DL-44 Blaster",
-  power: "0.7",
-  forcePower: "0",
-  stealth: "0.6",
-  healingEfficincy: "0.6"
-  }, 
-  {
-  name: "Chewbacca",
-  type: "Wookie",
-  strength: "Strngth",
-  Weapons: "",
-  specialWeapon: "Bowcaster",
-  power: "0.9",
-  forcePower: "0",
-  stealth: "0.35",
-  healingEfficincy: "0.6"
+    id: 'uuid-1',
+    name: 'Luke Skywalker',
+    skills: [
+      { name: 'Force Push', description: 'Pushes enemies back 2 tiles.', effect: { pushDistance: 2 } },
+      { name: 'Lightsaber Mastery', description: 'Bonus damage with lightsabers.', effect: { weaponType: 'lightsaber', bonusDamage: 10 } }
+    ],
+    speed: 5,
+    defense: 8,
+    special: { name: 'Jedi Reflexes', description: 'Dodge one attack per turn.', effect: { dodge: 1 } },
+    clothing: ['cloak-uuid-1'],
+    weapons: ['weapon-uuid-lightsaber', 'weapon-uuid-blaster'],
+    health: 100,
+    type: 'Jedi',
+    isGood: true,
+    level: 1,
+    experience: 0,
+    upgradePath: [
+      { level: 2, speed: 6, defense: 9, health: 110, skills: [], special: {} },
+      { level: 3, speed: 7, defense: 10, health: 120, skills: [], special: {} },
+      { level: 4, speed: 8, defense: 12, health: 130, skills: [], special: {} },
+      { level: 5, speed: 9, defense: 14, health: 150, skills: [], special: {} }
+    ]
   },
   {
-    name: "Princess Leia",
-    type: "Princess",
-    strength: "Negotaitors Edge",
-    Weapons: "",
-    specialWeapon: "Satines Lament",
-    power: "0.3",
-    forcePower: "0.2",
-    stealth: "0.85",
-    healingEfficincy: "0.6"
-    },
-    {
-    name: "R2-D2",
-    type: "Droid",
-    strength: "Shield",
-    Weapons: "",
-    specialWeapon: "Electro Pod",
-    power: "0.2",
-    forcePower: "0",
-    stealth: "0.5",
-    healingEfficincy: "0.6"
-    },
-    {
-        name: "Obi-Wan Kenobi",
-        type: "Jedi Master",
-        strength: "Light Saber Combat", 
-        Weapons: "",
-        specialWeapon: "LightSaber",
-        power: "0.8",
-        forcePower: "0.8",
-        stealth: "0.7",
-        healingEfficincy: "0.7",  
-        }, 
-        {
-        name: "Yoda", 
-        type: "Jedi Master",
-        strength: "Force",
-        Weapons: "",
-        specialWeapon: "LightSaber",
-        power: "0.8",
-        forcePower: "1",
-        stealth: "0.9",
-        healingEfficincy: "0.9"
-        },
-        {
-            name: "Mandolorian",
-            type: "Mandolorian",
-            strength: "Armor",
-            Weapons: "",
-            specialWeapon: "Beskar Bullets",
-            power: "0.8",
-            forcePower: "0",
-            stealth: "0.5",
-            healingEfficincy: "0.4"
-        },
-        {
-            name: "Boba Fett",
-            type: "Bounty Hunter",
-            strength: "Accuracy",
-            Weapons: "",
-            specialWeapon: "Rocket",
-            power: "0.7",
-            forcePower: "0",
-            stealth: "0.5",
-            healingEfficincy: "0.5"
-        },
-];
+    id: "uuid-2",
+    name: "Han Solo",
+    skills: [
+      { name: "Head Shot", description: "Hits enemy wtih headshot", effects: { headShotChance: 100  } },
+      { name: "Pistol Mastery" , description: "Bonus damage with pistols.", effect: { weaponType: "pistol", bonusDamage: 10 } }
+    ],
+    speed: 5,
+    defense: 8,
+    special: { name: "Light Speed", description: "Go to light speed move double the amount in on move.", effect: { dodge: 1 } },
+    clothing: ["vest-uuid-2"],
+    weapons: ["weapon-uuid-DL 44 Blaster", "weapon-uuid-CryoBan grenade"],
+    health: 100,
+    type: "Smuggler",
+    isGood: true,
+    level: 1,
+    experience: 0,
+    upgradePath: [
+      { level: 2, speed: 6, defense: 9, health: 110, skills: [], special: {} },
+      { level: 3, speed: 7, defense: 10, health: 120, skills: [], special: {} },
+      { level: 4, speed: 8, defense: 12, health: 130, skills: [], special: {} },
+      { level: 5, speed: 9, defense: 14, health: 150, skills: [], special: {} }
+    ]
+  },
+  {
+    id: "uuid-3",
+    name: "Chewbaca",
+    skills: [
+      { name: 'Smash', description: 'Smash an enemy', effect: { smashRadius: 15 } },
+      { name: 'bowCaster mastery', description: 'Crossbow boiunces back enemy 2 tiles', effect: { weaponType: 'bowcaster', pushDistance: 2 } }
+    ],
+    speed: 5,
+    defense: 8,
+    special: { name: 'smash', description: 'You smash an enemie dead.', effect: { bonusDamage: 100} },
+    clothing: ['cloak-uuid-1'],
+    weapons: ['weapon-uuid-bowCaster', 'weapon-uuid-flash grenade'],
+    health: 100,
+    type: 'Wookie',
+    isGood: true,
+    level: 1,
+    experience: 0,
+    upgradePath: [
+      { level: 2, speed: 6, defense: 9, health: 110, skills: [], special: {} },
+      { level: 3, speed: 7, defense: 10, health: 120, skills: [], special: {} },
+      { level: 4, speed: 8, defense: 12, health: 130, skills: [], special: {} },
+      { level: 5, speed: 9, defense: 14, health: 150, skills: [], special: {} }
+    ]
+  },
+  {
+    id: 'uuid-4',
+    name: 'Princess Leia',
+    skills: [
+      { name: 'Rebel attack', description: 'All current enemies get raided from ally rebels.', effect: { /*add later*/ } },
+    ],
+    speed: 5,
+    defense: 8,
+    special: { name: 'Lola robot', description: 'Leias robot tazes enemies', effect: { bonusDamage: 25 } },
+    clothing: ['cloak-uuid-1'],
+    weapons: ['weapon-uuid-DDC pistol', 'weapon-uuid-smoke grenade'],
+    health: 100,
+    type: 'Princess',
+    isGood: true,
+    level: 1,
+    experience: 0,
+    upgradePath: [
+      { level: 2, speed: 6, defense: 9, health: 110, skills: [], special: {} },
+      { level: 3, speed: 7, defense: 10, health: 120, skills: [], special: {} },
+      { level: 4, speed: 8, defense: 12, health: 130, skills: [], special: {} },
+      { level: 5, speed: 9, defense: 14, health: 150, skills: [], special: {} }
+    ]
+  }
+]; 
