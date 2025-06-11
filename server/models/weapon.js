@@ -21,9 +21,8 @@
  */
 
 export const weaponTypes = ['melee', 'short-range', 'mid-range', 'long-range', 'special'];
-
 export const weapons = [
-  // Lightsaber (Melee)
+
   {
     name: 'Lightsaber',
     type: 'melee',
@@ -50,7 +49,7 @@ export const weapons = [
       { level: 5, damage: 40, accuracy: 1.0 }
     ]
   },
-  // Blaster (Short/Mid-range)
+
   {
     name: 'Blaster',
     type: 'mid-range',
@@ -76,30 +75,77 @@ export const weapons = [
       { level: 5, damage: 25, accuracy: 0.93 }
     ]
   },
-  // Vibro-ax (Long weapon)
+
   {
-    name: 'Vibro-ax',
-    type: 'long-range',
-    range: 2,
-    damage: 20,
+    name: 'BowCaster',
+    type: 'mid-range',
+    range: 6,
+    damage: 35,
     accuracy: 0.9,
     piercing: 1,
-    splashRadius: null,
-    headshotChance: 0.05,
+    splashRadius: 1,
+    headshotChance: 0.1,
     burn: null,
     blind: null,
     specials: [
-      { type: 'heavy', effect: 'can stagger enemies' }
+      { type: 'knockBack', effect: 'pushBack' }
     ],
-    image: '/images/weapons/vibro-ax.png',
-    description: 'A heavy, long weapon favored by Gamorreans and other brutes.',
-    rarity: 'epic',
+    image: '/images/weapons/bowcaster.png',
+    description: '',
+    rarity: '',
     weight: 6,
     upgradePath: [
-      { level: 2, damage: 23, accuracy: 0.91 },
-      { level: 3, damage: 26, accuracy: 0.92 },
-      { level: 4, damage: 30, accuracy: 0.93 },
-      { level: 5, damage: 34, accuracy: 0.94 }
+      { level: 2, damage: 36, accuracy: 0.91 },
+      { level: 3, damage: 38, accuracy: 0.92 },
+      { level: 4, damage: 40, accuracy: 0.93 },
+      { level: 5, damage: 44, accuracy: 0.94 }
     ]
+  },
+  {
+    name: "Flash Grenade",
+    type: "melee",
+    range: 6,
+    damage: null,
+    accuracy: 0.9,
+    piercing: null,
+    splashRadius: null,
+    headshotChance: null,
+    burn: null,
+    blind: 1,
+    image: '/images/weapons/flashGrenade.png',
+    description: 'Blinds Enemys temporarily',
+    rarity: 'common',
+    weight: 1,
+    upgradePath: [
+      { level: 2, damage: 1, accuracy: 0.91 },
+      { level: 3, damage: 4, accuracy: 0.92 },
+      { level: 4, damage: 5, accuracy: 0.93 },
+      { level: 5, damage: 7, accuracy: 0.94 }
+    ]
+  },
+  {
+    name: "Sniper",
+    type: "long-range",
+    range: 10,
+    damage: 75,
+    accuracy: 0.8,
+    piercing: 2,
+    splashRadius: null,
+    headshotChance: 0.2,
+    burn: null,
+    blind: null,
+    specials: [
+      { type: "headshot", effect: "instant death" }
+    ],
+    image: '/images/weapons/bowcaster.png',
+    description: 'Long range gunto kill enemys from afar.',
+    rarity: 'legendary',
+    weight: 6,
+    upgradePath: [
+      { level: 2, damage: 77, accuracy: 0.8 },
+      { level: 3, damage: 79, accuracy: 0.82 },
+      { level: 4, damage: 81, accuracy: 0.83 },
+      { level: 5, damage: 85, accuracy: 0.84 }
+    ],
   }
-]; 
+];
