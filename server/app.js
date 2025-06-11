@@ -14,6 +14,7 @@ import weaponsRouter from './routes/weapons.js';
 import serversRouter from './routes/servers.js';
 import layoutsRouter from './routes/layouts.js';
 import adminPanelRouter from './routes/adminPanel.js';
+import clothesRouter from './routes/clothes.js';
 
 // Create an instance of an Express application
 const app = express();
@@ -47,6 +48,7 @@ app.use('/api/weapons', weaponsRouter);
 app.use('/api/servers', serversRouter);
 app.use('/api/layouts', layoutsRouter);
 app.use('/admin-panel', adminPanelRouter);
+app.use('/api/clothes', clothesRouter);
 
 // Start the server and have it listen on the specified port
 // When the server starts, log a message to the console with the URL
