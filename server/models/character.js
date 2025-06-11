@@ -21,7 +21,7 @@
 export const characterTypes = ["Jedi,", "Smuggler", "Wookie", "Droid", "Princess", "Jedi Master", "Mandolorian", "Bounty Hunter"];
 
 export const characters = [
- 
+
   {
     id: 'uuid-1',
     name: 'Luke Skywalker',
@@ -48,8 +48,8 @@ export const characters = [
     id: "uuid-2",
     name: "Han Solo",
     skills: [
-      { name: "Head Shot", description: "Hits enemy wtih headshot", effects: { headShotChance: 100  } },
-      { name: "Pistol Mastery" , description: "Bonus damage with pistols.", effect: { weaponType: "pistol", bonusDamage: 10 } }
+      { name: "Head Shot", description: "Hits enemy wtih headshot", effects: { headShotChance: 100 } },
+      { name: "Pistol Mastery", description: "Bonus damage with pistols.", effect: { weaponType: "pistol", bonusDamage: 10 } }
     ],
     speed: 5,
     defense: 8,
@@ -75,7 +75,7 @@ export const characters = [
     ],
     speed: 5,
     defense: 8,
-    special: { name: 'smash', description: 'You smash an enemie dead.', effect: { bonusDamage: 100} },
+    special: { name: 'smash', description: 'You smash an enemie dead.', effect: { bonusDamage: 100 } },
     health: 100,
     type: 'Wookie',
     isGood: true,

@@ -12,13 +12,17 @@
  * - burn: { duration: number } | null (burn effect duration in turns)
  * - blind: { duration: number } | null (blind effect duration in turns)
  * - specials: array of { type: string, ...params } (for extensibility)
+ * - upgradePath: array of { level: integer, damage: integer, accuracy: number, special: object, etc. }
+ * - weight: number (calculated based on type and upgrades)
  *
  * All special mechanics should be represented as explicit fields or in the specials array.
+ *
+ * Example extensibility: Add new upgrade paths and weight logic per weapon type.
  */
 
 export const weaponTypes = ['melee', 'short-range', 'mid-range', 'long-range', 'special'];
 export const weapons = [
-  
+
   {
     name: 'Lightsaber',
     type: 'melee',
@@ -45,7 +49,7 @@ export const weapons = [
       { level: 5, damage: 40, accuracy: 1.0 }
     ]
   },
-  
+
   {
     name: 'Blaster',
     type: 'mid-range',
@@ -71,7 +75,7 @@ export const weapons = [
       { level: 5, damage: 25, accuracy: 0.93 }
     ]
   },
-  
+
   {
     name: 'BowCaster',
     type: 'mid-range',
@@ -131,7 +135,7 @@ export const weapons = [
     burn: null,
     blind: null,
     specials: [
-      { type: "headshot" , effect: "instant death"  }
+      { type: "headshot", effect: "instant death" }
     ],
     image: '/images/weapons/bowcaster.png',
     description: 'Long range gunto kill enemys from afar.',
