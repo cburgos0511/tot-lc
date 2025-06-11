@@ -9,27 +9,32 @@ setupSettingsModal();
 
 ScreenManager('main-screen', MainScreen);
 
-let selectedCharacter = null;
+let selectedCharacter = null; // Variables that store player choices//
 let selectedWeapon = null;
 let selectedClothes = null;
 
 document.addEventListener('click', async (e) => {
-  if (e.target.id === 'start-btn') {
-    ScreenManager('start-screen', StartScreen);
-  } else if (e.target.id === "traits-button") {
+  if (e.target.id === 'start-btn') { //Makes trait screen with the api traits appear//
     ScreenManager("traitScreen", traitScreen);
     await new Promise(resolve => setTimeout(resolve, 0));
     await populateCharacterSelect();
     await populateWeaponSelect();
     await populateClothesSelect();
-  } else if (e.target.textContent.includes('Finalize')) {
-    console.log('Final Selection:');
-    console.log('Character:', selectedCharacter);
-    console.log('Weapon:', selectedWeapon);
-    console.log('Clothes:', selectedClothes);
-    // You can store or use these variables however you like here
+  }  else if (e.target.id === "finalize-btn") {
+    if (selectedCharacter && selectedWeapon && selectedClothes) {
+      const summaryText = `Your character is ${selectedCharacter.name} with a ${selectedWeapon.name} and wearing ${selectedClothes.name}.`;
+      document.getElementById("summary").textContent = summaryText; // Sets up the summary only if all options selected//
+  
+     
+      document.getElementById("start-playing").classList.remove("hidden"); //if all options selected start button appears//
+    } else {
+      document.getElementById("summary").textContent = "Please select a character, weapon, and clothes before finalizing.";//if not a message apears to tell the player to select one of each//
+    }
+  } else if (e.target.id === "start-playing-btn") {
+    ScreenManager("start-screen", StartScreen); //mkes the start playing button take you to the home levels scree//
   }
-});
+}
+);
 
 async function fetchCharacters() {
   try {
@@ -39,7 +44,7 @@ async function fetchCharacters() {
     console.error("Failed to fetch characters:", error);
     return [];
   }
-}
+} //fetch the character api and convert to json//
 
 async function populateCharacterSelect() {
   const characters = await fetchCharacters();
@@ -59,7 +64,7 @@ async function populateCharacterSelect() {
 
   
   characters.forEach((char) => {
-    const option = document.createElement('option');
+    const option = document.createElement('option'); //displays the characters value in the options html//
     option.value = char.id || char.name;
 
     const displayedSkills = Array.isArray(char.skills) && char.skills.length
@@ -77,7 +82,7 @@ async function populateCharacterSelect() {
     console.log("Selected character:", selectedCharacter);
   });
 }
-
+//fetch the weapons api and convert to json//
 async function fetchWeapons() {
   try {
     const res = await fetch("http://localhost:3000/api/weapons");
@@ -87,7 +92,7 @@ async function fetchWeapons() {
     return [];
   }
 }
-
+//displays the weapons value in the option html//
 async function populateWeaponSelect() {
   const weapons = await fetchWeapons();
   const weaponSelect = document.getElementById('weaponSelect');
@@ -108,7 +113,7 @@ async function populateWeaponSelect() {
     const damage = weapon.damage ?? '?';
     const range = weapon.range ?? '?';
     const type = weapon.type ?? 'Unknown';
-    option.textContent = `${weapon.name} – Damage: ${damage}, Range: ${range}, Type: ${type}`;
+    option.textContent = `${weapon.name} - Damage: ${damage}, Range: ${range}, Type: ${type}`;
     weaponSelect.appendChild(option);
   });
 
@@ -118,7 +123,7 @@ async function populateWeaponSelect() {
     console.log("Selected weapon:", selectedWeapon);
   });
 }
-
+//fetch the clothes api and convert to json//
 async function fetchClothes() {
   try {
     const res = await fetch("http://localhost:3000/api/clothes");
@@ -128,7 +133,7 @@ async function fetchClothes() {
     return [];
   }
 }
-
+//displays the clothes value in the option html//
 async function populateClothesSelect() {
   const clothes = await fetchClothes();
   const clothesSelect = document.getElementById('clothesSelect');

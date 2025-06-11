@@ -48,10 +48,19 @@ export function traitScreen() {
     </select>
   </div>
 
-  <!-- Finalize Button -->
-  <button class="w-full py-3 bg-purple-700 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300 shadow-lg">
+  
+  <button id="finalize-btn"class="w-full py-3 bg-purple-700 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300 shadow-lg">
     ✅ Finalize Selection
   </button>
 </div>
+
+<div id="summary" class="mt-4 text-white text-lg font-bold"></div>
+
+<div id="start-playing" class="mt-6 text-center hidden">
+  <button id ="start-playing-btn"class="py-3 px-6 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition duration-300 shadow-lg">
+    🚀 Start Playing
+  </button>
+</div>
+
   `;
 }

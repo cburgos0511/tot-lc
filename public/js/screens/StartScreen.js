@@ -38,14 +38,6 @@ export function StartScreen() {
         <h1 class="text-white text-3xl font-bold mb-6 text-center">Levels</h1>
         <div id="button-container" class="grid grid-cols-5 gap-4">
           ${generateLevelButtonsHTML()}
-
-          <button
-  id="traits-button"
-  class="fixed bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-3 text-lg font-orbitron font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-700 rounded-xl shadow-md hover:from-indigo-500 hover:to-purple-600 hover:shadow-lg transition duration-300 ease-in-out animate-brightnessPulse z-50"
->
-  Choose Character Traits
-</button>
-
         </div>
       </div>
     </div>
