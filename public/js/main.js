@@ -19,6 +19,7 @@ document.addEventListener('click', async (e) => {
    
     await new Promise(resolve => setTimeout(resolve, 0));
     await populateCharacterSelect();
+    await populateWeaponSelect();
   }
 });
 
@@ -55,4 +56,46 @@ async function populateCharacterSelect() {
     charSelect.appendChild(option);
   });
   
+};
+
+async function fetchWeapons() {
+  try {
+    const res = await fetch("http://localhost:3000/api/weapons");
+    return await res.json();
+  } catch (error) {
+    console.error("Failed to fetch weapons:", error);
+    return [];
+  }
+}
+
+async function populateWeaponSelect() {
+  const weapons = await fetchWeapons();
+  const weaponSelect = document.getElementById('weaponSelect');
+
+  if (!weaponSelect) return;
+
+  
+  weaponSelect.innerHTML = '';
+
+  
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  placeholder.textContent = 'Select a weapon';
+  weaponSelect.appendChild(placeholder);
+
+  
+  weapons.forEach(weapon => {
+    const option = document.createElement('option');
+    option.value = weapon.id || weapon.name;
+
+    
+    const damage = weapon.damage ?? '?';
+    const range = weapon.range ?? '?';
+    const type = weapon.type ?? 'Unknown';
+
+    option.textContent = `${weapon.name} – Damage: ${damage}, Range: ${range}, Type: ${type}`;
+    weaponSelect.appendChild(option);
+  });
 }
